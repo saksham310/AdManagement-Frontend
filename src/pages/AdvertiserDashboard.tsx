@@ -1,5 +1,5 @@
 import DashboardHeader from "@/components/custom/DashboardHeader.tsx";
-import AdsTable from "@/components/custom/AdsTable.tsx";
+import AdsData from "@/components/custom/AdsData.tsx";
 
 const AdvertiserDashboard = () => {
 
@@ -12,7 +12,7 @@ const AdvertiserDashboard = () => {
                         <h1 className="text-3xl font-bold text-foreground text-balance">Advertisement Dashboard</h1>
                         <p className="text-muted-foreground mt-2">Monitor and track your advertisement campaigns</p>
                     </div>
-                    <AdsTable/>
+                    <AdsData/>
                 </div>
             </main>
         </div>

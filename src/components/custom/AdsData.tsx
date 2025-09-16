@@ -1,6 +1,8 @@
 import {Badge} from "@/components/ui/badge";
 import {useGetAds} from "@/hooks/useGetAds.ts";
 import DataTable from "@/components/custom/DataTable.tsx";
+import {useEffect, useMemo, useState} from "react";
+import SummaryCard from "@/components/custom/SummaryCard.tsx";
 
 const columns = [
     {
@@ -38,17 +40,23 @@ const columns = [
         ),
     },
     {
-        key: "impressions",
+        key: "impressionCount",
         label: "Impressions",
         sortable: true,
-        render: (row: AdRecord) => new Intl.NumberFormat().format(row.impressions),
+        render: (row: AdRecord) => new Intl.NumberFormat().format(row.impressionCount),
     },
 ];
 
 
-const AdsTable = () => {
+const AdsData = () => {
     const {data} = useGetAds();
-    const adData = data?.ads || [];
+    const [adData, setAdData] = useState<AdRecord[]>([]);
+
+    useEffect(() => {
+        if (data) {
+            setAdData(data)
+        }
+    }, [data, adData]);
 
     const filters = [
         {
@@ -58,16 +66,35 @@ const AdsTable = () => {
         },
     ];
 
+    const summaryItems: SummaryCardItem[] = useMemo(() => {
+        return [
+            { label: "Total Ads", value: adData.length },
+            {
+                label: "Total Impressions",
+                value: adData.reduce((acc, ad) => acc + ad.impressionCount, 0),
+                formatNumber: true,
+            },
+            {
+                label: "Active Ads",
+                value: adData.filter((ad) => ad.status === "active").length,
+            },
+        ];
+    }, [adData]);
+
+
     return <>
-        <DataTable
-            label={'Advertisement Progress'}
-            data={adData}
-            columns={columns}
-            searchKeys={["app", "page", "placement"]}
-            filters={filters}
-            emptyMessage="You haven't placed any ads with us."
-        />
+        <div className="space-y-4">
+            <SummaryCard items={summaryItems}/>
+            <DataTable
+                label="Advertisement Progress"
+                data={adData}
+                columns={columns}
+                searchKeys={["app", "page", "placement"]}
+                filters={filters}
+                emptyMessage="You haven't placed any ads with us."
+            />
+        </div>
     </>
 }
 
-export default AdsTable;
+export default AdsData;
