@@ -103,13 +103,17 @@ function DataTable<T extends Record<string, any>>
                                             className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"> {label}
                                         <ArrowUpDown className="ml-2 h-4 w-4"/> </Button>) : (label)} </th>))} </tr>
                             </thead>
-                            <tbody> {processedData.map((row, idx) => (<tr key={idx}
-                                                                          className="border-b border-border/50 hover:bg-muted/30 transition-colors"> {columns.map(({
-                                                                                                                                                                       key,
-                                                                                                                                                                       render
-                                                                                                                                                                   }) => (
-                                <td key={String(key)}
-                                    className="py-4 px-4"> {render ? render(row) : String(row[key])} </td>))} </tr>))} </tbody>
+                            <tbody>
+                            {processedData.map((row, idx) => (
+                                <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"} >
+                                    {columns.map(({ key, render }) => (
+                                        <td key={String(key)} className="py-3 px-4 text-gray-700">
+                                            {render ? render(row) : String(row[key])}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                            </tbody>
                         </table>)}
                 </div>
             </CardContent>
