@@ -53,7 +53,7 @@ function DataTable<T extends Record<string, any>>
             <CardHeader className="pb-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <CardTitle
-                        className="text-lg md:text-xl font-semibold">{label}
+                        className="text-lg md:text-xl text-green-900 font-semibold">{label}
                     </CardTitle>
                     <div className="flex flex-col sm:flex-row gap-3">
                         <div className="relative">
@@ -91,7 +91,7 @@ function DataTable<T extends Record<string, any>>
                             <thead>
                             <tr className="border-b border-border"> {columns.map(({key, label, sortable}) => (
                                 <th key={String(key)}
-                                    className="text-left py-3 px-4 font-medium text-muted-foreground"> {sortable ? (
+                                    className="text-left py-3 px-4 font-medium text-primary"> {sortable ? (
                                     <Button variant="ghost" size="sm" onClick={() => {
                                         if (sortKey === key) {
                                             setSortOrder(sortOrder === "asc" ? "desc" : "asc")
@@ -100,7 +100,7 @@ function DataTable<T extends Record<string, any>>
                                             setSortOrder("asc")
                                         }
                                     }}
-                                            className="h-auto p-0 font-medium text-muted-foreground hover:text-foreground"> {label}
+                                            className="h-auto p-0 font-medium text-primary hover:bg-transparent hover:text-primary"> {label}
                                         <ArrowUpDown className="ml-2 h-4 w-4"/> </Button>) : (label)} </th>))} </tr>
                             </thead>
                             <tbody>

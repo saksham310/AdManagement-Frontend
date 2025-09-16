@@ -1,60 +1,20 @@
-import {Badge} from "@/components/ui/badge";
 import {useGetAds} from "@/hooks/useGetAds.ts";
 import DataTable from "@/components/custom/DataTable.tsx";
 import {useEffect, useMemo, useState} from "react";
 import SummaryCard from "@/components/custom/SummaryCard.tsx";
 import {BarChart,Tv, CheckCircle} from "lucide-react";
 
-const columns = [
-    {
-        key: "app",
-        label: "App",
-        sortable: false,
-    },
-    {
-        key: "page",
-        label: "Page",
-    },
-    {
-        key: "placement",
-        label: "Placement",
-    },
-    {
-        key: "status",
-        label: "Status",
-        render: (row: AdRecord) => (
-            <Badge
-                variant={row.status === "active" ? "default" : "secondary"}
-                className={`flex items-center gap-1 ${
-                    row.status === "active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                }`}
-            >
-                <span className={`w-2 h-2 rounded-full ${row.status === "active" ? "bg-green-600" : "bg-red-600"}`}/>
-                {row.status}
-            </Badge>
+interface AdsDataProps {
+    columns: typeof columns;
+}
 
-        ),
-    },
-    {
-        key: "impressionCount",
-        label: "Impressions",
-        sortable: true,
-        render: (row: AdRecord) => new Intl.NumberFormat().format(row.impressionCount),
-    },
-];
-
-
-const AdsData = () => {
+const AdsData = ({ columns }: AdsDataProps) => {
     const {data} = useGetAds();
     const [adData, setAdData] = useState<AdRecord[]>([]);
 
     useEffect(() => {
-        if (data) {
-            setAdData(data)
-        }
-    }, [data, adData]);
+        if (data) setAdData(data);
+    }, [data]);
 
     const filters = [
         {
@@ -75,7 +35,6 @@ const AdsData = () => {
         {label: "Active Ads", value: adData.filter(ad => ad.status === "active").length, icon: CheckCircle},
     ], [adData]);
 
-
     return <>
         <div className="space-y-4">
             <SummaryCard items={summaryItems}/>
@@ -90,5 +49,4 @@ const AdsData = () => {
         </div>
     </>
 }
-
 export default AdsData;
