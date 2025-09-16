@@ -43,7 +43,13 @@ export const useLogin = () => {
                 userState: user,
             });
 
-            toast.success("Logged in successfully!");
+            toast.success("Logged in successfully!", {
+                id: "Login",
+                style: {
+                    background: "var(--accent)",
+                    color: "var(--accent-foreground)"
+                }
+            });
             navigate("/dashboard");
 
         },
