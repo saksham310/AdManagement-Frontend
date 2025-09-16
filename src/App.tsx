@@ -7,6 +7,7 @@ import RequireAuth from "@/components/custom/RequireAuth.tsx";
 
 import LoginPage from "@/pages/LoginPage.tsx";
 import DashboardWrapper from "@/pages/DashboardWrapper.tsx";
+import ChangePasswordPage from "@/components/custom/ChangePasswordForm.tsx";
 
 
 function App() {
@@ -27,7 +28,11 @@ function App() {
                             </RequireAuth>
                         }
                     />
-
+                    <Route path="/change-password" element={
+                        <RequireAuth allowNewUser>
+                            <ChangePasswordPage/>
+                        </RequireAuth>
+                    }/>
                     <Route path="*" element={<Navigate to="/login" replace/>}/>
                 </Routes>
             </Router>

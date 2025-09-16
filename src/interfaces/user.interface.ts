@@ -4,4 +4,5 @@ export interface AuthUser {
     email: string;
     role: "admin" | "advertiser";
     group: string | null;
+    isNew: boolean;
 }

@@ -50,7 +50,11 @@ export const useLogin = () => {
                     color: "var(--accent-foreground)"
                 }
             });
-            navigate("/dashboard");
+            if (user.isNew) {
+                navigate("/change-password"); 
+            } else {
+                navigate("/dashboard");
+            }
 
         },
     })
