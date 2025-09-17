@@ -19,4 +19,5 @@ export interface DataTableProps<T> {
     filters?: FilterConfig<T>[]
     emptyMessage?: string
     label?: string
+    onRowDoubleClick?: (row: T) => void;
 }

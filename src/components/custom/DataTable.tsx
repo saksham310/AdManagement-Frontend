@@ -14,7 +14,8 @@ function DataTable<T extends Record<string, any>>
      searchKeys = [],
      filters = [],
      emptyMessage,
-     label
+     label,
+     onRowDoubleClick
  }: DataTableProps<T>) {
     const [searchTerm, setSearchTerm] = useState("");
     const [sortKey, setSortKey] = useState<keyof T | null>(null);
@@ -105,8 +106,14 @@ function DataTable<T extends Record<string, any>>
                             </thead>
                             <tbody>
                             {processedData.map((row, idx) => (
-                                <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"} >
-                                    {columns.map(({ key, render }) => (
+                                <tr
+                                    key={idx}
+                                    className={`${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} ${
+                                        onRowDoubleClick ? "cursor-pointer hover:bg-gray-100" : ""
+                                    }`}
+                                    onDoubleClick={() => onRowDoubleClick?.(row)} // 👈 trigger modal
+                                >
+                                    {columns.map(({key, render}) => (
                                         <td key={String(key)} className="py-3 px-4 text-gray-700">
                                             {render ? render(row) : String(row[key])}
                                         </td>

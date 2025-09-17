@@ -20,6 +20,7 @@ const ChangePasswordPage = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const [type, token] = authData.split(' ');
+        console.log('email', user?.email);
         mutate(
             {email: user?.email || "", newPassword: password},
             {

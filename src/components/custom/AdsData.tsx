@@ -1,20 +1,37 @@
 import {useGetAds} from "@/hooks/useGetAds.ts";
 import DataTable from "@/components/custom/DataTable.tsx";
 import {useEffect, useMemo, useState} from "react";
-import SummaryCard from "@/components/custom/SummaryCard.tsx";
-import {BarChart,Tv, CheckCircle} from "lucide-react";
+import SummaryCard, {type SummaryCardItem} from "@/components/custom/SummaryCard.tsx";
+import {BarChart, CheckCircle, Tv} from "lucide-react";
+import type {AdRecord} from "@/interfaces/ad.interface.ts";
+import type {columns} from "@/pages/AdvertiserDashboard.tsx";
+import AdminAdForm from "@/components/custom/AdminAdForm.tsx";
+import DialogForm from "@/components/custom/DialogForm.tsx";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import type {AuthUser} from "@/interfaces/user.interface.ts";
 
 interface AdsDataProps {
     columns: typeof columns;
 }
 
-const AdsData = ({ columns }: AdsDataProps) => {
+const AdsData = ({columns}: AdsDataProps) => {
     const {data} = useGetAds();
     const [adData, setAdData] = useState<AdRecord[]>([]);
+    const [selectedAd, setSelectedAd] = useState<AdRecord | null>(null);
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const user = useAuthUser<AuthUser>();
+    const isAdmin = user?.role === "admin";
 
     useEffect(() => {
         if (data) setAdData(data);
     }, [data]);
+
+
+    const handleEdit = (ad: AdRecord) => {
+        setSelectedAd(ad);
+        setOpenEditModal(true);
+    };
+
 
     const filters = [
         {
@@ -45,7 +62,20 @@ const AdsData = ({ columns }: AdsDataProps) => {
                 searchKeys={["app", "page", "placement"]}
                 filters={filters}
                 emptyMessage="You haven't placed any ads with us."
+                onRowDoubleClick={isAdmin ? handleEdit : undefined}
             />
+            <DialogForm open={openEditModal} setOpen={setOpenEditModal} title="Edit Advertisement">
+                {selectedAd && (
+                    <AdminAdForm
+                        mode="edit"
+                        initialData={selectedAd}
+                        onSubmit={(values) => {
+                            console.log("Updating ad", values);
+                            setOpenEditModal(false);
+                        }}
+                    />
+                )}
+            </DialogForm>
         </div>
     </>
 }

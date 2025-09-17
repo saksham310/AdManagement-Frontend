@@ -4,10 +4,10 @@ import DashboardHeader from "@/components/custom/DashboardHeader.tsx";
 import UserForm, {type UserRecord} from "@/components/custom/UserForm.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {UserPlus,Plus} from "lucide-react";
+import {Plus, UserPlus} from "lucide-react";
 import {useCreateUser} from "@/hooks/useCreateUser.tsx";
 import DialogForm from "@/components/custom/DialogForm.tsx";
-import AdminAdForm from "@/components/custom/AdminAdForm.tsx";
+import AdminAdForm, {type AdminAdRecord} from "@/components/custom/AdminAdForm.tsx";
 
 const adColumns = [
     ...columns,
@@ -26,6 +26,11 @@ const AdminDashboardPage = () => {
     const handleCreateUser = (values: UserRecord) => {
         mutate(values);
         setOpenUserForm(false)
+    }
+
+    const handleCreateAd = (values: AdminAdRecord) => {
+        console.log(values)
+        setOpenAdForm(false)
     }
     return (
         <>
@@ -48,7 +53,7 @@ const AdminDashboardPage = () => {
                 </DialogForm>
 
                 <DialogForm open={openAdForm} setOpen={setOpenAdForm} title={"Add new Ad"}>
-                    <AdminAdForm onSubmit={handleCreateUser} isSubmitting={isPending}/>
+                    <AdminAdForm onSubmit={handleCreateAd} isSubmitting={isPending}/>
                 </DialogForm>
                 <main className="container mx-auto px-4 py-8">
                     <div className="space-y-6">

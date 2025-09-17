@@ -4,5 +4,5 @@ export type AdRecord = {
     page: string
     placement: string
     status: "active" | "inactive"
-    impressions: number
+    impressionCount: number
 }
