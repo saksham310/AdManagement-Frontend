@@ -1,12 +1,13 @@
 import {columns} from "@/pages/AdvertiserDashboard.tsx";
 import AdsData from "@/components/custom/AdsData.tsx";
 import DashboardHeader from "@/components/custom/DashboardHeader.tsx";
-import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog"
 import UserForm, {type UserRecord} from "@/components/custom/UserForm.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {UserPlus} from "lucide-react";
+import {UserPlus,Plus} from "lucide-react";
 import {useCreateUser} from "@/hooks/useCreateUser.tsx";
+import DialogForm from "@/components/custom/DialogForm.tsx";
+import AdminAdForm from "@/components/custom/AdminAdForm.tsx";
 
 const adColumns = [
     ...columns,
@@ -18,32 +19,37 @@ const adColumns = [
 
 ]
 const AdminDashboardPage = () => {
-    const [open, setOpen] = useState(false)
+    const [openUserForm, setOpenUserForm] = useState(false)
+    const [openAdForm, setOpenAdForm] = useState(false)
     const {mutate, isPending} = useCreateUser();
 
     const handleCreateUser = (values: UserRecord) => {
         mutate(values);
-        setOpen(false)
+        setOpenUserForm(false)
     }
     return (
         <>
             <div className="min-h-screen bg-background">
                 <DashboardHeader/>
-                <div className="flex justify-end my-4 mr-4 md:mr-24">
-                    <Button onClick={() => setOpen(true)} className="flex items-center gap-2">
+                <div className="flex justify-end gap-4 my-4 mr-4 md:mr-24">
+                    <Button onClick={() => setOpenUserForm(true)} className="cursor-pointer flex items-center gap-2">
                         <UserPlus className="w-4 h-4"/>
                         Add User
                     </Button>
+
+                    <Button onClick={() => setOpenAdForm(true)} className="cursor-pointer flex items-center gap-2">
+                        <Plus className="w-4 h-4"/>
+                        Add Advertisement
+                    </Button>
                 </div>
 
-                <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Add New User</DialogTitle>
-                        </DialogHeader>
-                        <UserForm onSubmit={handleCreateUser} mode="create" isSubmitting={isPending}/>
-                    </DialogContent>
-                </Dialog>
+                <DialogForm open={openUserForm} setOpen={setOpenUserForm} title={"Add new user"}>
+                    <UserForm onSubmit={handleCreateUser} isSubmitting={isPending}/>
+                </DialogForm>
+
+                <DialogForm open={openAdForm} setOpen={setOpenAdForm} title={"Add new Ad"}>
+                    <AdminAdForm onSubmit={handleCreateUser} isSubmitting={isPending}/>
+                </DialogForm>
                 <main className="container mx-auto px-4 py-8">
                     <div className="space-y-6">
                         <div>
