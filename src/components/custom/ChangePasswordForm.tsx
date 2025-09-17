@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useChangePassword} from "@/hooks/useChangePassword";
+import {useChangePassword} from "@/hooks/useChangePassword.ts";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@/components/ui/button";

@@ -1,5 +1,5 @@
 export type AdRecord = {
-    id: number
+    id: string
     app: string
     page: string
     placement: string

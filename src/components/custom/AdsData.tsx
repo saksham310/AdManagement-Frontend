@@ -5,10 +5,11 @@ import SummaryCard, {type SummaryCardItem} from "@/components/custom/SummaryCard
 import {BarChart, CheckCircle, Tv} from "lucide-react";
 import type {AdRecord} from "@/interfaces/ad.interface.ts";
 import type {columns} from "@/pages/AdvertiserDashboard.tsx";
-import AdminAdForm from "@/components/custom/AdminAdForm.tsx";
+import AdminAdForm, {type AdminAdRecord} from "@/components/custom/AdminAdForm.tsx";
 import DialogForm from "@/components/custom/DialogForm.tsx";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import type {AuthUser} from "@/interfaces/user.interface.ts";
+import {useUpdateAds} from "@/hooks/useUpdateAds.ts";
 
 interface AdsDataProps {
     columns: typeof columns;
@@ -21,6 +22,7 @@ const AdsData = ({columns}: AdsDataProps) => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const user = useAuthUser<AuthUser>();
     const isAdmin = user?.role === "admin";
+    const {mutate} = useUpdateAds(selectedAd?.id || "");
 
     useEffect(() => {
         if (data) setAdData(data);
@@ -32,6 +34,10 @@ const AdsData = ({columns}: AdsDataProps) => {
         setOpenEditModal(true);
     };
 
+    const onSubmit = (ad: AdminAdRecord) => {
+        mutate(ad);
+        setOpenEditModal(false);
+    }
 
     const filters = [
         {
@@ -70,8 +76,7 @@ const AdsData = ({columns}: AdsDataProps) => {
                         mode="edit"
                         initialData={selectedAd}
                         onSubmit={(values) => {
-                            console.log("Updating ad", values);
-                            setOpenEditModal(false);
+                            onSubmit(values);
                         }}
                     />
                 )}

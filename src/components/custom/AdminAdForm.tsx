@@ -88,6 +88,7 @@ const AdminAdForm = ({
                     value={form.placement}
                     onChange={handleChange}
                     required
+                    className={'border border-gray-300 mt-2'}
                 />
             </div>
 
